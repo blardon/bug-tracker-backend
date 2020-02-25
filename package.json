@@ -1,0 +1,20 @@
+{
+	"name": "bug-tracker-backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "App.js",
+	"dependencies": {
+		"apollo-server-express": "^2.10.1",
+		"express": "^4.17.1",
+		"graphql": "^14.6.0",
+		"mongoose": "^5.9.2",
+		"nodemon": "^2.0.2"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"start": "nodemon App.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC"
+}
