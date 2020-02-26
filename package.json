@@ -4,7 +4,9 @@
 	"description": "",
 	"main": "App.js",
 	"dependencies": {
+		"@hapi/joi": "^17.1.0",
 		"apollo-server-express": "^2.10.1",
+		"bcryptjs": "^2.4.3",
 		"express": "^4.17.1",
 		"graphql": "^14.6.0",
 		"mongoose": "^5.9.2",

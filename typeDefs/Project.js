@@ -5,6 +5,7 @@ const projectDef = gql`
 		id: ID!
 		name: String!
 		desc: String!
+		types: [String!]!
 		createdAt: String!
 	}
 
