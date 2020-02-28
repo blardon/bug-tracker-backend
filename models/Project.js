@@ -4,6 +4,10 @@ const schema = new mongoose.Schema(
 	{
 		name: String,
 		desc: String,
+		creator: {
+			type: mongoose.Types.ObjectId,
+			ref: 'User'
+		},
 		types: [ String ]
 	},
 	{ timestamps: true }

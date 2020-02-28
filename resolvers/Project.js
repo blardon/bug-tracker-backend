@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const { UserInputError } = require('apollo-server-express');
+const { UserInputError, AuthenticationError } = require('apollo-server-express');
 const Project = require('../models/Project');
+const User = require('../models/User');
 const ProjectValidation = require('../validationSchemas/Project');
-const Joi = require('@hapi/joi');
 
 const projectResolver = {
 	Query: {
@@ -18,17 +18,29 @@ const projectResolver = {
 		}
 	},
 	Mutation: {
-		createProject: async (parent, args, context, info) => {
-			// TODO: user authed
+		createProject: async (parent, args, { req }, info) => {
+			if (!req.isAuth) {
+				throw new AuthenticationError('User is not signed in');
+			}
 
-			await ProjectValidation.validateAsync(args)
+			// Validate user input, if wrong abort and throw error
+			await ProjectValidation.validateAsync(args);
 
+			// add standard board types
 			const newProject = {
 				...args,
+				creator: req.userId,
 				types: [ 'todo', 'inprogress', 'done' ]
 			};
 
-			return Project.create(newProject);
+			const createdProject = await Project.create(newProject);
+			await User.update({ _id: req.userId }, { $push: { projects: createdProject } });
+			return createdProject;
+		}
+	},
+	Project: {
+		creator: (project, args, context, info) => {
+			return User.findById(project.creator);
 		}
 	}
 };

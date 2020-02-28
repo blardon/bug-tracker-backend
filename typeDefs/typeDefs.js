@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server-express');
 const projectDef = require('./Project');
+const userDef = require('./User');
+const issueDef = require('./Issue');
 
 const root = gql`
 	type Query {
@@ -15,4 +17,4 @@ const root = gql`
 	}
 `;
 
-module.exports = [ root, projectDef ];
+module.exports = [ root, projectDef, userDef, issueDef ];

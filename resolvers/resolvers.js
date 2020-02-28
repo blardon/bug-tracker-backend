@@ -1,3 +1,4 @@
 const projectResolver = require('./Project');
+const userResolver = require('./User');
 
-module.exports = [ projectResolver ];
+module.exports = [ projectResolver, userResolver ];

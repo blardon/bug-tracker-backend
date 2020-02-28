@@ -4,6 +4,7 @@ const resolvers = require('./resolvers/resolvers');
 const typeDefs = require('./typeDefs/typeDefs');
 const config = require('./config');
 const mongoose = require('mongoose');
+const isAuth = require('./middleware/isAuth');
 
 try {
 	mongoose.connect(config.MONGODB_CONNECTION_STRING);
@@ -12,10 +13,12 @@ try {
 }
 const app = Express();
 app.disable('x-powered-by');
+app.use(isAuth);
 
 const server = new ApolloServer({
 	typeDefs,
-	resolvers
+	resolvers,
+	context: ({ req }) => ({ req })
 });
 
 server.applyMiddleware({ app });
