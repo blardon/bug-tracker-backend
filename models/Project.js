@@ -4,6 +4,12 @@ const schema = new mongoose.Schema(
 	{
 		name: String,
 		desc: String,
+		users: [
+			{
+				type: mongoose.Types.ObjectId,
+				ref: 'User'
+			}
+		],
 		creator: {
 			type: mongoose.Types.ObjectId,
 			ref: 'User'
@@ -13,7 +19,7 @@ const schema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-schema.pre('save', async function() {
+schema.pre('remove', async function() {
 	if (this.isModified('name')) {
 	}
 });

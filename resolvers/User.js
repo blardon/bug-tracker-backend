@@ -53,7 +53,11 @@ const userResolver = {
 		}
 	},
 	User: {
-		projects: (user, args, context, info) => {
+		projects: (user, args, { req }, info) => {
+			if (!req.isAuth) {
+				throw new AuthenticationError('Not signed in.');
+			}
+
 			return Project.find({ _id: { $in: user.projects } });
 		}
 	}
