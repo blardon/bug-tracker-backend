@@ -45,6 +45,9 @@ const userResolver = {
 			if (req.isAuth) {
 				throw new AuthenticationError('User is already signed in');
 			}
+			if (await User.findOne({ username: args.username })) {
+				throw new UserInputError('Username is already in use');
+			}
 
 			const newUser = await User.create(args);
 			const authToken = jwt.sign({ userId: newUser.id }, config.JWT_AUTH_KEY, { expiresIn: '1y' });

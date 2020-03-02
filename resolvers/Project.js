@@ -37,7 +37,6 @@ const projectResolver = {
 			const currentUser = await User.findById(req.userId);
 			await currentUser.projects.push(createdProject);
 			await currentUser.save();
-			//await User.update({ _id: req.userId }, { $push: { projects: createdProject } });
 			return createdProject;
 		}
 	},
