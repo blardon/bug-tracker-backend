@@ -3,8 +3,8 @@ const { UserInputError, AuthenticationError } = require('apollo-server-express')
 const User = require('../models/User');
 const Project = require('../models/Project');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const config = require('../config');
+const { createAccessToken, createRefreshToken, sendRefreshTokenCookie } = require('../utils/jwt_tokens');
 //const UserValidation = require('../validationSchemas/User');
 
 const userResolver = {
@@ -22,7 +22,7 @@ const userResolver = {
 
 			return User.findById(id);
 		},
-		login: async (parent, { username, password }, { req }, info) => {
+		login: async (parent, { username, password }, { req, res }, info) => {
 			if (req.isAuth) {
 				throw new AuthenticationError('User is already signed in');
 			}
@@ -35,13 +35,20 @@ const userResolver = {
 				throw new AuthenticationError('Wrong password');
 			}
 
-			const authToken = jwt.sign({ userId: user.id }, config.JWT_AUTH_KEY, { expiresIn: '1y' });
+			const authToken = createAccessToken(user);
+			const refreshToken = createRefreshToken(user);
+
+			sendRefreshTokenCookie(res, refreshToken);
 
 			return { user: user, token: authToken };
 		}
 	},
 	Mutation: {
-		createUser: async (parent, args, { req }, info) => {
+		revokeRefreshTokenForUser: async (parent, args, { req, res }, info) => {
+			await User.findByIdAndUpdate(args.userId, { $inc: { tokenVersion: 1 } }).exec();
+			return true;
+		},
+		createUser: async (parent, args, { req, res }, info) => {
 			if (req.isAuth) {
 				throw new AuthenticationError('User is already signed in');
 			}
@@ -50,8 +57,10 @@ const userResolver = {
 			}
 
 			const newUser = await User.create(args);
-			const authToken = jwt.sign({ userId: newUser.id }, config.JWT_AUTH_KEY, { expiresIn: '1y' });
+			const authToken = createAccessToken(user);
+			const refreshToken = createRefreshToken(user);
 
+			sendRefreshTokenCookie(res, refreshToken);
 			return { user: newUser, token: authToken };
 		}
 	},

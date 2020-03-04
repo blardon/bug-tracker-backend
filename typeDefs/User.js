@@ -21,6 +21,7 @@ const userDef = gql`
 	}
 
 	extend type Mutation {
+		revokeRefreshTokenForUser(userId: ID!): Boolean!
 		createUser(username: String!, email: String!, password: String!): AuthData
 	}
 `;

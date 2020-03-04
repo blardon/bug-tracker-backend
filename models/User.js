@@ -6,7 +6,11 @@ const schema = new mongoose.Schema(
 		username: String,
 		email: String,
 		password: String,
-		projects: [ mongoose.Types.ObjectId ]
+		projects: [ mongoose.Types.ObjectId ],
+		tokenVersion: {
+			type: Number,
+			default: 0
+		}
 	},
 	{ timestamps: true }
 );
