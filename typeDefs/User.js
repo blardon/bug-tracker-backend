@@ -17,11 +17,11 @@ const userDef = gql`
 	extend type Query {
 		user(id: ID!): User
 		users: [User!]!
-		login(username: String!, password: String!): AuthData
 	}
 
 	extend type Mutation {
 		revokeRefreshTokenForUser(userId: ID!): Boolean!
+		login(username: String!, password: String!): AuthData
 		createUser(username: String!, email: String!, password: String!): AuthData
 	}
 `;

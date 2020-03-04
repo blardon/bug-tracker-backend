@@ -21,6 +21,12 @@ const userResolver = {
 			}
 
 			return User.findById(id);
+		}
+	},
+	Mutation: {
+		revokeRefreshTokenForUser: async (parent, args, { req, res }, info) => {
+			await User.findByIdAndUpdate(args.userId, { $inc: { tokenVersion: 1 } }).exec();
+			return true;
 		},
 		login: async (parent, { username, password }, { req, res }, info) => {
 			if (req.isAuth) {
@@ -41,12 +47,6 @@ const userResolver = {
 			sendRefreshTokenCookie(res, refreshToken);
 
 			return { user: user, token: authToken };
-		}
-	},
-	Mutation: {
-		revokeRefreshTokenForUser: async (parent, args, { req, res }, info) => {
-			await User.findByIdAndUpdate(args.userId, { $inc: { tokenVersion: 1 } }).exec();
-			return true;
 		},
 		createUser: async (parent, args, { req, res }, info) => {
 			if (req.isAuth) {
@@ -57,8 +57,8 @@ const userResolver = {
 			}
 
 			const newUser = await User.create(args);
-			const authToken = createAccessToken(user);
-			const refreshToken = createRefreshToken(user);
+			const authToken = createAccessToken(newUser);
+			const refreshToken = createRefreshToken(newUser);
 
 			sendRefreshTokenCookie(res, refreshToken);
 			return { user: newUser, token: authToken };

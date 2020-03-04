@@ -6,6 +6,7 @@ const typeDefs = require('./typeDefs/typeDefs');
 const config = require('./config');
 const mongoose = require('mongoose');
 const isAuth = require('./middleware/isAuth');
+const cors = require('cors');
 const checkTokens = require('./middleware/checkTokens');
 
 try {
@@ -18,6 +19,12 @@ try {
 	throw new Error('connection failed');
 }
 const app = Express();
+app.use(
+	cors({
+		origin: 'http://localhost:3000',
+		credentials: true
+	})
+);
 app.use(cookieParser());
 app.disable('x-powered-by');
 app.use(isAuth);
@@ -29,7 +36,7 @@ const server = new ApolloServer({
 	context: ({ req, res }) => ({ req, res })
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, cors: false });
 
 app.listen({ port: config.PORT }, () => {
 	console.log('server started on port', config.PORT);
