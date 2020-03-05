@@ -5,10 +5,9 @@ const issueDef = gql`
 		id: ID!
 		title: String!
 		desc: String!
-		project: Project!
+		category: Category!
 		priority: Int!
 		creator: User!
-		type: String!
 		createdAt: String!
 	}
 
@@ -18,7 +17,7 @@ const issueDef = gql`
 	}
 
 	extend type Mutation {
-		createIssue(title: String!, desc: String!): Issue
+		createIssue(categoryId: ID!, title: String!, desc: String!): Issue
 	}
 `;
 

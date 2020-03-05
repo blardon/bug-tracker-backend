@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 const createAccessToken = (user) => {
-	return jwt.sign({ userId: user.id }, config.JWT_AUTH_KEY, { expiresIn: '15m' });
+	return jwt.sign({ userId: user.id }, config.JWT_AUTH_KEY, { expiresIn: '2h' });
 };
 
 const createRefreshToken = (user) => {

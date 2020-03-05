@@ -10,10 +10,10 @@ const schema = new mongoose.Schema(
 				ref: 'User'
 			}
 		],
-		issues: [
+		categories: [
 			{
 				type: mongoose.Types.ObjectId,
-				ref: 'Issue'
+				ref: 'Category'
 			}
 		],
 		creator: {

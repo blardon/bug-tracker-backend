@@ -5,10 +5,9 @@ const schema = new mongoose.Schema(
 		title: String,
 		desc: String,
 		priority: Number,
-		type: String,
-		project: {
+		category: {
 			type: mongoose.Types.ObjectId,
-			ref: 'Project'
+			ref: 'Category'
 		},
 		creator: {
 			type: mongoose.Types.ObjectId,

@@ -7,7 +7,7 @@ const projectDef = gql`
 		desc: String!
 		creator: User!
 		users: [User!]!
-		issues: [Issue!]!
+		categories: [Category!]!
 		types: [String!]!
 		createdAt: String!
 	}
