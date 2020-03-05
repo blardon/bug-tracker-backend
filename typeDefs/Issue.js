@@ -3,8 +3,10 @@ const { gql } = require('apollo-server-express');
 const issueDef = gql`
 	type Issue {
 		id: ID!
-		name: String!
+		title: String!
 		desc: String!
+		project: Project!
+		priority: Int!
 		creator: User!
 		type: String!
 		createdAt: String!
@@ -16,7 +18,7 @@ const issueDef = gql`
 	}
 
 	extend type Mutation {
-		createIssue(name: String!, desc: String!): Issue
+		createIssue(title: String!, desc: String!): Issue
 	}
 `;
 

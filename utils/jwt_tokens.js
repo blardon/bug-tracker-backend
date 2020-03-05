@@ -10,7 +10,7 @@ const createRefreshToken = (user) => {
 };
 
 const sendRefreshTokenCookie = (res, token) => {
-	res.cookie('jid', token, { httpOnly: true });
+	res.cookie('jid', token, { httpOnly: true, path: '/refresh_token' });
 };
 
 module.exports = { createAccessToken, createRefreshToken, sendRefreshTokenCookie };

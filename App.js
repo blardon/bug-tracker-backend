@@ -25,7 +25,7 @@ app.use(
 		credentials: true
 	})
 );
-app.use(cookieParser());
+app.use('/refresh_token', cookieParser());
 app.disable('x-powered-by');
 app.use(isAuth);
 app.post('/refresh_token', checkTokens);

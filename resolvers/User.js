@@ -21,6 +21,13 @@ const userResolver = {
 			}
 
 			return User.findById(id);
+		},
+		me: (parent, args, { req, res }, info) => {
+			if (!req.isAuth) {
+				throw new AuthenticationError('User is not signed in');
+			}
+
+			return User.findById(args.userId);
 		}
 	},
 	Mutation: {
@@ -66,10 +73,6 @@ const userResolver = {
 	},
 	User: {
 		projects: (user, args, { req }, info) => {
-			if (!req.isAuth) {
-				throw new AuthenticationError('Not signed in.');
-			}
-
 			return Project.find({ _id: { $in: user.projects } });
 		}
 	}

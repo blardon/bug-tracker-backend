@@ -2,12 +2,18 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
 	{
-		name: String,
+		title: String,
 		desc: String,
 		users: [
 			{
 				type: mongoose.Types.ObjectId,
 				ref: 'User'
+			}
+		],
+		issues: [
+			{
+				type: mongoose.Types.ObjectId,
+				ref: 'Issue'
 			}
 		],
 		creator: {
@@ -20,7 +26,7 @@ const schema = new mongoose.Schema(
 );
 
 schema.pre('remove', async function() {
-	if (this.isModified('name')) {
+	if (this.isModified('title')) {
 	}
 });
 
