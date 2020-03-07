@@ -18,6 +18,7 @@ const issueDef = gql`
 
 	extend type Mutation {
 		createIssue(categoryId: ID!, title: String!, desc: String!): Issue
+		updatePriority(issueId: ID!, newPriority: Int!): Boolean
 	}
 `;
 

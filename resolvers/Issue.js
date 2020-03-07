@@ -16,6 +16,24 @@ const issueResolver = {
 		}
 	},
 	Mutation: {
+		updatePriority: async (parent, { issueId, newPriority }, { req }, info) => {
+			if (!mongoose.Types.ObjectId.isValid(issueId)) {
+				throw new UserInputError(`${issueId} is not a valid id`);
+			}
+			if (!req.isAuth) {
+				throw new AuthenticationError('User is not signed in');
+			}
+			const currentIssue = await Issue.findById(issueId);
+			if (!currentIssue) {
+				throw new UserInputError(`Issue ${issueId} does not exist.`);
+			}
+			const currentUser = await User.findById(req.userId);
+			//TODO: check if user can edit issue
+
+			currentIssue.priority = newPriority;
+			await currentIssue.save();
+			return true;
+		},
 		createIssue: async (parent, { categoryId, title, desc }, { req }, info) => {
 			if (!req.isAuth) {
 				throw new AuthenticationError('User is not signed in');
