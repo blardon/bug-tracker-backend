@@ -4,6 +4,7 @@ const categoryDef = gql`
 	type Category {
 		id: ID!
 		title: String!
+		issues: [Issue!]!
 		project: Project!
 	}
 

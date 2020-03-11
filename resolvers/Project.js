@@ -11,6 +11,7 @@ const projectResolver = {
 			return Project.find();
 		},
 		project: (parent, { id }, context, info) => {
+			// TODO: Auth checks
 			if (!mongoose.Types.ObjectId.isValid(id)) {
 				throw new UserInputError(`${id} is not a valid id`);
 			}

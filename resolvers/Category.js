@@ -7,6 +7,7 @@ const Project = require('../models/Project');
 const categoryResolver = {
 	Query: {
 		category: (parent, { id }, context, info) => {
+			// TODO: Auth checks
 			if (!mongoose.Types.ObjectId.isValid(id)) {
 				throw new UserInputError(`${id} is not a valid id`);
 			}
@@ -42,8 +43,9 @@ const categoryResolver = {
 		}
 	},
 	Category: {
-		project: async (category, args, context, info) => {
-			return Project.findById(category.project);
+		issues: async (category, args, context, info) => {
+			const currentProject = await Project.findById(category.project);
+			return (await currentProject.populate('issues').execPopulate()).issues.filter((issue) => issue.category == category.id);
 		}
 	}
 };
