@@ -4,9 +4,7 @@ const categoryDef = gql`
 	type Category {
 		id: ID!
 		title: String!
-		type: String!
 		project: Project!
-		issues: [Issue!]!
 	}
 
 	extend type Query {
@@ -14,7 +12,7 @@ const categoryDef = gql`
 	}
 
 	extend type Mutation {
-		createCategory(projectId: ID!, title: String!, type: String!): Issue
+		createCategory(projectId: ID!, title: String!): Category
 	}
 `;
 

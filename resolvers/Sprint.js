@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 const { UserInputError, AuthenticationError } = require('apollo-server-express');
-const Category = require('../models/Category');
+const Sprint = require('../models/Sprint');
 const User = require('../models/User');
 const Project = require('../models/Project');
 
-const categoryResolver = {
+const sprintResolver = {
 	Query: {
-		category: (parent, { id }, context, info) => {
+		sprint: (parent, { id }, context, info) => {
 			if (!mongoose.Types.ObjectId.isValid(id)) {
 				throw new UserInputError(`${id} is not a valid id`);
 			}
 
-			return Category.findById(id);
+			return Sprint.findById(id);
 		}
 	},
 	Mutation: {
-		createCategory: async (parent, { projectId, title }, { req }, info) => {
+		createSprint: async (parent, { projectId, title, desc }, { req }, info) => {
 			if (!req.isAuth) {
 				throw new AuthenticationError('User is not signed in');
 			}
@@ -26,26 +26,26 @@ const categoryResolver = {
 			const currentUser = await User.findById(req.userId);
 
 			// check if current user is creator of the project
-			if (currentUser.id !== currentProject.creator) {
-				throw new AuthenticationError('Only the creator of the project can add new categories.');
+			if (currentUser.id != currentProject.creator) {
+				throw new AuthenticationError('Only the creator of the project can add new sprints.');
 			}
 
-			const newCategory = {
+			const newSprint = {
 				project: currentProject,
 				title,
-				issues: []
+				desc
 			};
-			const createdCategory = await Category.create(newCategory);
-			await currentProject.categories.push(createdCategory);
+			const createdSprint = await Sprint.create(newSprint);
+			await currentProject.sprints.push(createdSprint);
 			await currentProject.save();
-			return createdCategory;
+			return createdSprint;
 		}
 	},
-	Category: {
-		project: async (category, args, context, info) => {
-			return Project.findById(category.project);
+	Sprint: {
+		project: async (sprint, args, context, info) => {
+			return Project.findById(sprint.project);
 		}
 	}
 };
 
-module.exports = categoryResolver;
+module.exports = sprintResolver;

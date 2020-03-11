@@ -31,28 +31,23 @@ const projectResolver = {
 			const newProject = {
 				...args,
 				creator: req.userId,
-				categories: [],
-				types: [ 'todo', 'inprogress', 'done' ]
+				issues: [],
+				sprints: [],
+				categories: []
 			};
 
 			const createdProject = await Project.create(newProject);
 			const createdCategory1 = await Category.create({
 				project: createdProject,
-				title: 'To do',
-				type: 'todo',
-				issues: []
+				title: 'To do'
 			});
 			const createdCategory2 = await Category.create({
 				project: createdProject,
-				title: 'In progress',
-				type: 'inprogress',
-				issues: []
+				title: 'In progress'
 			});
 			const createdCategory3 = await Category.create({
 				project: createdProject,
-				title: 'Done',
-				type: 'done',
-				issues: []
+				title: 'Done'
 			});
 			await createdProject.categories.push(createdCategory1, createdCategory2, createdCategory3);
 			await createdProject.save();
@@ -64,6 +59,12 @@ const projectResolver = {
 	Project: {
 		creator: (project, args, context, info) => {
 			return User.findById(project.creator);
+		},
+		issues: async (project, args, context, info) => {
+			return (await project.populate('issues').execPopulate()).issues;
+		},
+		sprints: async (project, args, context, info) => {
+			return (await project.populate('sprints').execPopulate()).sprints;
 		},
 		categories: async (project, args, context, info) => {
 			return (await project.populate('categories').execPopulate()).categories;

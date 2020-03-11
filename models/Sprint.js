@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema(
 	{
 		title: String,
+		desc: String,
 		project: {
 			type: mongoose.Types.ObjectId,
 			ref: 'Project'
@@ -11,6 +12,6 @@ const schema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-const Category = mongoose.model('Category', schema);
+const Sprint = mongoose.model('Sprint', schema);
 
-module.exports = Category;
+module.exports = Sprint;

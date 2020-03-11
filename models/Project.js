@@ -10,10 +10,22 @@ const schema = new mongoose.Schema(
 				ref: 'User'
 			}
 		],
+		issues: [
+			{
+				type: mongoose.Types.ObjectId,
+				ref: 'Issue'
+			}
+		],
 		categories: [
 			{
 				type: mongoose.Types.ObjectId,
 				ref: 'Category'
+			}
+		],
+		sprints: [
+			{
+				type: mongoose.Types.ObjectId,
+				ref: 'Sprint'
 			}
 		],
 		creator: {

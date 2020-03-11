@@ -5,7 +5,9 @@ const issueDef = gql`
 		id: ID!
 		title: String!
 		desc: String!
+		project: Project!
 		category: Category!
+		sprint: Sprint!
 		priority: Int!
 		creator: User!
 		createdAt: String!
@@ -17,8 +19,8 @@ const issueDef = gql`
 	}
 
 	extend type Mutation {
-		createIssue(categoryId: ID!, title: String!, desc: String!): Issue
-		updatePriority(issueId: ID!, newPriority: Int!): Boolean
+		createIssue(projectId: ID!, categoryId: ID!, sprintId: ID!, title: String!, desc: String!): Issue
+		updatePriority(issueId: ID!, newPriority: Int!): Issue
 	}
 `;
 
