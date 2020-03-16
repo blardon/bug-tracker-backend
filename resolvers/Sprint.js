@@ -44,6 +44,10 @@ const sprintResolver = {
 	Sprint: {
 		project: async (sprint, args, context, info) => {
 			return Project.findById(sprint.project);
+		},
+		issues: async (sprint, args, context, info) => {
+			const currentProject = await Project.findById(sprint.project);
+			return (await currentProject.populate('issues').execPopulate()).issues.filter((issue) => issue.sprint == sprint.id);
 		}
 	}
 };

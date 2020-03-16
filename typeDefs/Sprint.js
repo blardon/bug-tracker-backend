@@ -6,6 +6,7 @@ const sprintDef = gql`
 		title: String!
 		desc: String!
 		project: Project!
+		issues: [Issue!]!
 	}
 
 	extend type Query {
